@@ -1,0 +1,55 @@
+{{extend 'layout.html'}}
+
+{{
+def parse_games(str):
+    mygames=str[1:len(str)-1].split('|')
+    return mygames
+}}
+
+{{
+def get_img(game):
+    imgs = db().select(db.games.ALL)
+    for row in imgs:
+        if row.game == game:
+            return row.imagelink
+    return 'None'
+pass
+}}
+
+{{mygames=parse_games(profile.games)}}
+
+
+<div style="width: 99%; height: 220px; float:center;background:#F2F2F2;border: thick solid  #DF3A01;border-radius:25px; ">
+
+    <div style="float: left; width:60%; height: 40px; padding-top:5%; padding-bottom:10%; padding-left:2%;">
+             <img src="{{=URL(r=request,c='static',f='PokemonY.png')}}" height="150" width="150" hspace="20" style='float: left'>
+                 <p></p>
+        <FONT FACE="Georgia"><h2><b>{{=profile.username}}</b></h2></FONT>
+        <br><FONT FACE="Georgia"><h4>Location: {{=profile.mystate}}</h4></FONT>
+
+</div>
+
+ <div style="float: right; width:30%; height: 5px; padding-top:10%; padding-bottom:1%; padding-right:2%;"><p>
+     <input type="button" value="SEND REQUEST" style="float: right;"></p>
+    </div>
+
+</div>
+<p></p>
+
+<div>
+<div style="width: 45%; height: 220px; float:left;background:#F2F2F2;border: thick solid  #DF3A01 ; padding-top:3%; padding-bottom:3%; padding-left:3%;padding-right:3%;border-radius:25px;">
+            <FONT FACE="Georgia"><h3>ABOUT ME</h3></FONT>
+           <p>{{=profile.info}}</p>
+
+</div>
+<div style="width:43%; height: 220px; float:right;background:#F2F2F2;border: thick solid #DF3A01 ; padding-top:3%; padding-bottom:3%; padding-left:3%;padding-right:1%;border-radius:25px;">
+            <FONT FACE="Georgia"><h3>FRIEND CODE</h3></FONT>
+           <center><h1>{{=profile.friendcode}}</h1></center>
+</div>
+</div>
+    <div style="float: center; width: 100%; height: 320px"> </div>
+
+<div style="width:95%; height: 150px; float:center;background:#F2F2F2;border: thick solid  #DF3A01 ; padding-top:1%; padding-bottom:3%; padding-left:3%;padding-right:1%;border-radius:25px;">
+    <FONT FACE="Georgia"><h3>{{=profile.username}}'s GAMES:</h3></FONT>
+           <p> {{for mygame in mygames:}}<img src="{{=URL(r=request,c='static',f=get_img(mygame))}}" height="100" width="100">{{pass}}</p>
+</div>

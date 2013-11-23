@@ -1,0 +1,6 @@
+{{extend 'layout.html'}}
+<h2>My Tasks</h2>
+<h3>
+    {{=A('Home', _href=URL('index'))}}
+</h3>
+{{=grid}}

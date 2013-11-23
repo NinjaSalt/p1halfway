@@ -1,0 +1,35 @@
+{{extend 'layout.html'}}
+<h1>Your inbox</h1>
+
+<p>
+    {{=A('Send a message', _href = URL('default', 'create_message'), _class='btn')}}
+</p>
+<div>
+    
+{{messages = db(db.inbox_message.receiver_username=='pop').select(db.inbox_message.ALL)}}
+
+<div style="width: 30%; height: 220px; float:left;background:#F2F2F2;border: thick solid  #DF3A01;border-radius:25px; ">
+    {{users = db().select(db.profile.ALL)}}
+    {{for user in users:}}
+    <h3>
+        <center>{{=user.username}}</center>
+    </h3>
+        
+    {{pass}}
+</div>
+
+<ul>
+
+{{for message in messages:}}
+    <div style="width: 65%; float:right;background:#F2F2F2;border: thick solid  #DF3A01;border-radius:25px; padding-left:10px; padding-right:10px; ">
+    <h3>
+        {{=message.title}}
+    </h3>
+    <p>
+        {{=message.description}}
+    </p>
+    </div>
+<br>
+{{pass}}
+</ul>
+</div>

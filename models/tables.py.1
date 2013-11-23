@@ -1,0 +1,6 @@
+db.define_table('profile',
+   Field('username', unique=True),
+   Field('state',requires=IS_IN_SET(['California'])),
+   Field('picture', 'upload'),
+   Field('about you', 'text'),
+   Field('games', requires=IS_IN_SET(['Pokemon X', 'Pokemon Y'])))

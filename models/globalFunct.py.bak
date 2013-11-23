@@ -1,0 +1,7 @@
+# coding: utf8
+def get_username():
+    user_owners = db().select(db.profile.ALL)
+    for row in user_owners:
+        if row.user_owner == auth.user.email:
+            return row.username
+    return 'None'

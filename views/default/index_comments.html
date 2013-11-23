@@ -1,0 +1,31 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script>
+$(document).ready(function() {
+  $("div#comment_form form").submit(function(e) {
+    var a = $(this).serializeArray();
+    var msg =  "msg=" + JSON.stringify(a);
+    $.post('{{=post_url}}', msg, function(jdata) {
+  		var data = JSON.parse(jdata);
+  		var encodeddata = $('<div/>').text(data).html();
+  		var newdiv = $("<div>");
+  		newdiv.html(encodeddata);
+  		// Erases comment field.
+  		$("#no_table_comments").val("");
+		$("#mylist").append(newdiv);
+    });
+  	e.preventDefault();
+  	return false;
+  });  
+})
+</script>
+{{end}}
+
+<h1>My blog Post</h1>
+
+<div id="mylist"></div>
+
+<div id="comment_form">
+{{=form}}
+</div>

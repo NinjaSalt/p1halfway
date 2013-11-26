@@ -137,17 +137,17 @@ def show():
     return dict(message_list = message_list)
 
 @auth.requires_login()
-def index_comments():
-    blog_post_id = 4
-    blog_text = "This is my blog post"
-    form = SQLFORM.factory(Field('comments', 'text'),
-                           hidden=dict(blog_id=blog_post_id))
-    post_url = URL('add_comment', user_signature=True)
-    return dict(blog_text=blog_text, form=form,
-                post_url=post_url)
+def post_chat():
+    chat = request.vars.msg
+    print chat
+    db.chat_message.insert(mychat=chat)
 
-@auth.requires_signature()
-def add_comment():
-    
-    db.comments.insert(comments=comments)
-    return response.json(comments)
+def index_comments():
+    return dict()
+
+def get_chat():
+    message = ""
+    chats = db().select(db.chat_message.ALL)
+    for row in chats:
+        message = message + "<b>" + row.author + "</b>" + ": " +row.mychat +"<br>"
+    return message

@@ -1,3 +1,46 @@
 {{extend 'layout.html'}}
-<h1>This is the default/index_comments.html template</h1>
-{{=BEAUTIFY(response._vars)}}
+
+{{block head}}
+<script>
+setInterval (refreshChat, 2500); 
+
+    function refreshChat(){
+        $.ajax({  
+                    type: "GET",  
+                    url: "{{=URL('get_chat')}}",  
+                    success: function(val) {
+                        console.log(val);
+                        $( "#chatBox" ).html(val);
+                    }
+             });
+        $("#chatBox").animate({scrollTop:$(this).height()}, 'slow');
+    }
+    
+window.onload = refreshChat();
+    
+$(document).ready(function() {
+  $(".sendB").click(function() {
+    var msg = $("#chat").val();
+    $("#chat").val("");
+    console.log(msg);
+    $.ajax({  
+                type: "POST",  
+                url: "{{=URL('post_chat')}}",  
+                data: {msg: msg},
+                success: function() {
+                }
+         })
+})
+});
+</script>
+{{end}}
+<div style="width: 45%; height: 300px; float:left;background:#F2F2F2;border: thick solid  #DF3A01 ; padding-top:3%; padding-bottom:3%; padding-left:3%;padding-right:3%;border-radius:25px;">
+    <div id="chatBox" style="overflow-y:scroll; height: 280px; padding-top: 10px">
+        
+    </div>
+    <form>
+    Chat: <input type="text" id="chat">
+   
+    <button id="send" class="sendB">send</button>
+ </form>
+</div>

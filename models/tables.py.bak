@@ -37,6 +37,10 @@ db.define_table('inbox_message',
     Field('description','text'),
     Field('receiver_username', requires=IS_IN_DB(db, 'profile.username', '%(username)s')))
 
+db.define_table('chat_message',
+    Field('author', default = get_username(), writable=False),
+    Field('mychat'))
+
 db.define_table('comments',
     Field('comments', 'text'),
     )

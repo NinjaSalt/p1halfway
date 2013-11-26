@@ -2,30 +2,45 @@
 
 {{block head}}
 <script>
+setInterval (refreshChat, 2500); 
+
+    function refreshChat(){
+        $.ajax({  
+                    type: "GET",  
+                    url: "{{=URL('get_chat')}}",  
+                    success: function(val) {
+                        console.log(val);
+                        $( "#chatBox" ).html(val);
+                    }
+             });
+        $("#chatBox").animate({scrollTop:$(this).height()}, 'slow');
+    }
+    
+window.onload = refreshChat();
+    
 $(document).ready(function() {
-  $("div#comment_form form").submit(function(e) {
-    var a = $(this).serializeArray();
-    var msg =  "msg=" + JSON.stringify(a);
-    $.post('{{=post_url}}', msg, function(jdata) {
-  		var data = JSON.parse(jdata);
-  		var encodeddata = $('<div/>').text(data).html();
-  		var newdiv = $("<div>");
-  		newdiv.html(encodeddata);
-  		// Erases comment field.
-  		$("#no_table_comments").val("");
-		$("#mylist").append(newdiv);
-    });
-  	e.preventDefault();
-  	return false;
-  });  
+  $(".sendB").click(function() {
+    var msg = $("#chat").val();
+    $("#chat").val("");
+    console.log(msg);
+    $.ajax({  
+                type: "POST",  
+                url: "{{=URL('post_chat')}}",  
+                data: {msg: msg},
+                success: function() {
+                }
+         })
 })
+});
 </script>
 {{end}}
-
-<h1>My blog Post</h1>
-
-<div id="mylist"></div>
-
-<div id="comment_form">
-{{=form}}
+<div style="width: 45%; height: 300px; float:left;background:#F2F2F2;border: thick solid  #DF3A01 ; padding-top:3%; padding-bottom:3%; padding-left:3%;padding-right:3%;border-radius:25px;">
+    <div id="chatBox" style="overflow-y:scroll; height: 280px;">
+        
+    </div>
+    <form>
+    Chat: <input type="text" id="chat">
+   
+    <button id="send" class="sendB">send</button>
+ </form>
 </div>

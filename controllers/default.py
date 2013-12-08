@@ -151,3 +151,22 @@ def get_chat():
     for row in chats:
         message = message + "<b>" + row.author + "</b>" + ": " +row.mychat +"<br>"
     return message
+
+def make_list():
+    listing = ""
+    list = []
+    messages = db(db.inbox_message.receiver_username==get_username()).select(db.inbox_message.ALL)
+    for row in messages:
+        if row.author not in list:
+            list.append(row.author)
+            listing = listing + "<div onclick='show_mes(this)' id='"+row.author+"' class='user'><center><h4>" + row.author + "</h4></center></div>"
+    return listing
+
+def get_mes():
+    my_user = request.vars.user
+    messages = db(db.inbox_message.receiver_username==get_username()).select(db.inbox_message.ALL)
+    mes = ""
+    for message in messages:
+        if my_user==message.author:
+            mes = mes + "<div style='width: 75%; float:right;background:#F2F2F2;border: thick solid  #DF3A01;border-radius:25px; padding-left:10px; padding-right:10px; '> <h3>"+message.title+"</h3><p>"+message.description+"</p></div>"
+    return mes
